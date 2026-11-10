@@ -118,3 +118,32 @@ button,.btn,select,input { touch-action: manipulation; }
   }
   .mobile-wallet b{font-variant-numeric:tabular-nums;color:#f0f6eb}
 }
+
+/* v1.5 campaign, workshop and salvage mobile usability */
+.campaign-layout,.workshop-layout{display:flex;flex-direction:column;gap:16px}
+.campaign-next,.workshop-focus{order:-1;min-width:0}
+.campaign-map,.workshop-list{min-width:0}
+.workshop-filters,.salvage-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:13px}
+.salvage-filters{padding:12px 0;grid-template-columns:repeat(3,minmax(0,1fr))}
+.workshop-filters .form-select,.salvage-filters .form-select{min-width:0;max-width:100%;width:100%}
+.workshop-result[hidden]{display:none!important}
+.salvage-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#243438;border:1px solid #405756;padding:12px;border-radius:9px;margin-bottom:12px}
+.salvage-toolbar .btn{white-space:normal;text-align:center}
+.elite-audit{margin:18px 0}
+.elite-audit summary{cursor:pointer;font-size:15px;font-weight:700;color:#e1edce}
+.elite-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:13px 0}
+.elite-stats span{display:block;padding:10px;background:#26383c;border:1px solid #3e5556;border-radius:7px}
+.elite-log{max-height:310px;overflow:auto}
+.elite-log-row{display:grid;grid-template-columns:72px 1fr auto;gap:8px;padding:9px;border-bottom:1px solid #314649;align-items:center}
+@media(max-width:700px){
+ .campaign-layout,.workshop-layout{gap:12px}
+ .campaign-next>.panel,.workshop-focus>.panel{border-color:#507451}
+ .workshop-filters{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px}
+ .salvage-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .salvage-filters input{grid-column:1/-1}
+ .salvage-toolbar{flex-direction:column;align-items:stretch}
+ .salvage-toolbar .btn{min-height:46px;width:100%}
+ .elite-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .elite-log-row{grid-template-columns:55px 1fr;gap:6px}
+ .elite-log-row span:last-child{grid-column:2}
+}
