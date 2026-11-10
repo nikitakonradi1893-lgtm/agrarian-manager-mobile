@@ -86,7 +86,7 @@ button,.btn,select,input { touch-action: manipulation; }
   .mobile-wallet{
     display:flex;
     position:sticky;
-    top:0;
+    top:env(safe-area-inset-top, 0px);
     z-index:950;
     align-items:center;
     justify-content:space-between;
@@ -94,7 +94,7 @@ button,.btn,select,input { touch-action: manipulation; }
     gap:5px;
     min-width:0;
     width:100%;
-    padding:calc(env(safe-area-inset-top, 0px) + 7px) 10px 9px;
+    padding:7px 10px 9px;
     background:rgba(18,30,34,.97);
     border-bottom:1px solid #456055;
     box-shadow:0 5px 15px rgba(0,0,0,.3);
