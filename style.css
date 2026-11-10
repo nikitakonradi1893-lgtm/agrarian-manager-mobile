@@ -50,3 +50,30 @@ button,.btn,select,input { touch-action: manipulation; }
  .table-scroll,table {max-width:100%;} table {display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 }
 @media(max-width:375px){.cols-2,.cols-3,.cols-4{grid-template-columns:1fr}.challenge-nav{grid-template-columns:1fr 1fr}.wallet span{font-size:10px}}
+
+
+/* v1.3 mobile layouts and workshop/campaign cards */
+.salvage-panel summary{cursor:pointer;font-size:15px;font-weight:750;list-style-position:inside;color:#dff0d2}
+.salvage-list{display:grid;gap:9px;margin-top:15px}
+.salvage-row{border:1px solid #40534f;background:#1e2c2e;padding:13px;border-radius:8px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.salvage-row>div:first-child{min-width:0}.salvage-row .small{line-height:1.7}
+.salvage-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:700px){
+ .table-wrap{overflow:visible;max-width:100%}
+ .table-wrap table{display:block;width:100%;max-width:none;overflow:visible;white-space:normal}
+ .table-wrap thead{display:none}
+ .table-wrap tbody{display:grid;gap:10px;padding:10px}
+ .table-wrap tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid #3a4d4f;border-radius:9px;overflow:hidden;background:#1b292d}
+ .table-wrap tbody td{display:flex;min-width:0;flex-direction:column;align-items:flex-start;justify-content:center;gap:7px;font-size:13px;white-space:normal;overflow-wrap:anywhere;padding:10px;border-top:0;border-bottom:1px solid #304246}
+ .table-wrap tbody td::before{content:attr(data-label);font-size:10px;letter-spacing:.7px;text-transform:uppercase;font-weight:700;color:#9aafb0}
+ .table-wrap tbody td:first-child{grid-column:1/-1;font-weight:650;background:#243438}
+ .table-wrap tbody td:last-child{grid-column:1/-1;align-items:stretch;border-bottom:0}
+ .table-wrap tbody td:last-child .btn{width:100%;font-size:13px;min-height:43px}
+ .table-wrap tbody tr:hover td{background:inherit}
+ .table-wrap tbody tr:hover td:first-child{background:#243438}
+ .salvage-row{flex-direction:column;align-items:stretch}
+ .salvage-actions{justify-content:stretch}
+ .salvage-actions .btn{flex:1;min-height:44px}
+ .content>.grid.cols-3:has(.kicker){grid-template-columns:1fr}
+ .toast{left:12px;right:12px;bottom:calc(90px + env(safe-area-inset-bottom));max-width:none}
+}
