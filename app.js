@@ -331,6 +331,12 @@ function lastSupplyPanel(){const items=S.supplyLastItems;
  if(!items.length){if(!S.supplyLast)return '';const c=machine(S.supplyLast);return `<div class="section"><h2>Последняя поставка</h2></div><div class="panel pad">${ROLES[c.role][1]} <b>${esc(c.name)}</b> · ${RAR[c.rarity]}</div>`}
  const b=S.supplyLastBonus||{};
  return `<div class="section"><h2>Последняя поставка — ${esc(S.supplyLastKind||'контейнер')}</h2></div><div class="panel pad"><div class="supply-last-list">${items.map(id=>{const c=machine(id);return `<div class="supply-found"><span style="font-size:29px">${ROLES[c.role][1]}</span><div><span class="tag rarity-${c.rarity}">${RAR[c.rarity]}</span><b>${esc(c.name)}</b><div class="small muted">${nameRole(c.role)} · ${esc(c.skill)}</div></div></div>`}).join('')}</div><div class="divider"></div><div class="row"><b>Бонусы:</b> ${b.coins?`🪙 ${fmt(b.coins)}`:''} ${b.parts?`🔩 ${fmt(b.parts)}`:''} ${b.gems?`💎 ${b.gems}`:''} ${!b.coins&&!b.parts&&!b.gems?'<span class="muted">Без дополнительных ресурсов</span>':''}</div>${items.length>1?'<p class="small muted">✨ Бонусная вторая машина!</p>':''}${b.guaranteed?'<p class="small muted">★ Сработала гарантия легендарной техники.</p>':''}</div>`}
+function eliteHistoryPanel(){
+ const all=Array.isArray(S.eliteHistory)?S.eliteHistory:[];
+ const last=all.slice(-20).reverse();
+ const counts=[2,3,4,5].map(r=>all.reduce((sum,e)=>sum+(e.rarities||[]).filter(v=>v===r).length,0));
+ return `<details class="panel pad elite-audit"><summary>📊 Журнал элитных контейнеров · ${all.length} открытий</summary><p class="small muted">Учёт начинается с версии 1.5, старые выпадения не восстановить. Гарантия — легендарная на 20-м открытии без 4★/5★. Вторая машина выпадает отдельно с шансом 5%.</p><div class="elite-stats"><span>Редкие: <b>${counts[0]}</b></span><span>Эпические: <b>${counts[1]}</b></span><span>Легендарные: <b>${counts[2]}</b></span><span>Мифические: <b>${counts[3]}</b></span></div>${last.length?`<div class="elite-log">${last.map((h,i)=>`<div class="elite-log-row"><span>№ ${all.length-i}</span><b>${(h.rarities||[]).map(n=>RAR[n]||'?').join(' + ')}</b><span class="small muted">${h.guaranteed?'Гарантия':'Случайно'}</span></div>`).join('')}</div>`:'<p class="small muted">Пока нет открытий в новой версии. Следующие элитные контейнеры будут записываться автоматически.</p>'}</details>`
+}
 function supplies(){
  const classBoxes=Object.keys(ROLES).map(role=>`<div class="panel pad class-box"><div class="kicker">ЦЕЛЕВАЯ ПОСТАВКА</div><h3>${ROLES[role][1]} ${ROLES[role][0]}</h3><p class="muted small">Только ${ROLES[role][0].toLocaleLowerCase('ru')}. Редкости: 64% / 28% / 7% / 1%. Мифические недоступны.</p><div class="small">Гарантия: <b>${S.classPity[role]} / 100</b></div><div class="progress"><div style="width:${S.classPity[role]}%"></div></div><div class="divider"></div><div class="small">Цена: <b>🪙 ${fmt(CLASS_BOX_PRICE)}</b></div><button class="btn primary" style="margin-top:13px" onclick="summon('${role}')" ${S.coins<CLASS_BOX_PRICE?'disabled':''}>Открыть</button></div>`).join('');
  return `${title('СНАБЖЕНИЕ','Центр поставок','Каждый контейнер содержит технику. Шанс второй машины — 5%; ресурсного бонуса — 50%. Выпадение легендарной или мифической машины сбрасывает гарантию соответствующего контейнера.')}
@@ -339,7 +345,7 @@ function supplies(){
  <div class="panel pad"><div class="kicker">ПРАВИЛА НАГРАД</div><h3>Дополнительное содержимое</h3><p class="small muted">100%: одна машина · 5%: вторая машина.</p><p class="small muted">50%: бонус ресурсами, с равным шансом монеты или запчасти. У элитной поставки ресурс удвоен.</p><p class="small muted">Монеты: 200 (50%), 500 (20%), 800 (15%), 1 200 (10%), 2 000 (5%). Запчасти: 10 / 25 / 40 / 70 / 120 с такими же весами.</p><p class="tiny muted">Проценты сумм указаны при условии, что выпал соответствующий ресурс. Счётчики независимы. Всего поставок: ${S.opened}.</p></div></div>
  <div class="section"><h2>Классовые контейнеры · 🪙 ${fmt(CLASS_BOX_PRICE)}</h2></div><p class="small muted">У каждого класса своя гарантия 100 открытий. Цена выше базовой, зато выпадает только выбранная категория техники. Общие шансы редкости совпадают с базовыми контейнерами.</p>
  <div class="grid cols-3">${classBoxes}</div>
- ${lastSupplyPanel()}${cataloguePanel()}<div class="notice" style="margin-top:18px">Для повышения до N★ нужны N экземпляров одной модели с (N−1)★, включая улучшаемую машину. Максимум — 6★. Материалы из активной бригады не расходуются.</div>`
+ ${eliteHistoryPanel()}${lastSupplyPanel()}${cataloguePanel()}<div class="notice" style="margin-top:18px">Для повышения до N★ нужны N экземпляров одной модели с (N−1)★, включая улучшаемую машину. Максимум — 6★. Материалы из активной бригады не расходуются.</div>`
 }
 function summon(kind){
  const elite=kind==='elite',basic=kind==='basic',classBox=!elite&&!basic;
@@ -371,6 +377,7 @@ function summon(kind){
  S.coins+=bonus.coins;S.parts+=bonus.parts;S.gems+=bonus.gems;
  S.opened++;bump('opens');S.supplyLast=received[0].id;
  S.supplyLastItems=received.map(c=>c.id);S.supplyLastKind=supplyLabel(kind);S.supplyLastBonus=bonus;
+ if(elite){if(!Array.isArray(S.eliteHistory))S.eliteHistory=[];S.eliteHistory.push({rarities:received.map(c=>c.rarity),guaranteed:guaranteed&&received[0].rarity===4});if(S.eliteHistory.length>500)S.eliteHistory=S.eliteHistory.slice(-500)}
  const desc=received.map(c=>`${c.name} (${RAR[c.rarity]})`).join(' + ');
  log(`${supplyLabel(kind)}: ${desc}.${bonus.coins?' +'+bonus.coins+' монет':''}${bonus.parts?' +'+bonus.parts+' деталей':''}${bonus.gems?' +'+bonus.gems+' кристаллов':''}`);
  notify(`Поставка: ${received.length} ед. техники${gotLegend?' ★ Легенда!':''}`);render();
